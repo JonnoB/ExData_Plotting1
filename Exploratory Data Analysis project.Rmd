@@ -1,0 +1,51 @@
+Exploratory Data analysis Project 1
+========================================================
+
+
+
+```{r}
+setwd("\\\\hk-fil-05/users14$/u35465/R/Exploratory Data Analysis")
+EPC <- read.table("household_power_consumption.txt", sep = ";",na.strings = "NA", header = TRUE)
+setwd("\\\\hk-fil-05/users14$/u35465/Repos/ExData_Plotting")
+EPC[,1] <-as.character(EPC[,1])
+EPC[,1] <- as.Date(as.character(EPC[,1]), "%d/%m/%Y")
+EPC <- EPC[EPC$Date >= as.Date(" 2007-02-01") & EPC$Date <= as.Date(" 2007-02-02"), ]
+
+for (i in 3:8) {
+  EPC[,i] <-as.numeric(as.character(EPC[,i]))
+  
+}
+EPC$DateTime <- as.POSIXct(paste(EPC$Date, EPC$Time), format="%Y-%m-%d %H:%M:%S")
+
+par(mfrow = (c(1,1)))
+
+hist(EPC$Global_active_power, col = "red", main = "Global Active Power", xlab = "Global Active Power (Kilowatts)")
+
+with(EPC, plot(DateTime,Global_active_power, type = "l",  ylab = "Global Active Power (Kilowatts)") )
+
+with(EPC, plot(DateTime,Sub_metering_1, type = "l",  ylab = "Energy Sub Metering") )
+with(EPC,lines(DateTime, Sub_metering_2, col = "red"))
+with(EPC,lines(DateTime, Sub_metering_3, col = "blue"))
+legend("topright", colnames(EPC[,c(7:9)]), col = c("black", "red", "blue"), lty = 1)
+
+with(EPC, plot(DateTime,Global_reactive_power, type = "l"))
+
+
+par(mfrow = (c(2,2)))
+
+hist(EPC$Global_active_power, col = "red", main = "Global Active Power", xlab = "Global Active Power (Kilowatts)")
+
+with(EPC, plot(DateTime,Global_active_power, type = "l",  ylab = "Global Active Power (Kilowatts)") )
+
+with(EPC, plot(DateTime,Sub_metering_1, type = "l",  ylab = "Energy Sub Metering") )
+with(EPC,lines(DateTime, Sub_metering_2, col = "red"))
+with(EPC,lines(DateTime, Sub_metering_3, col = "blue"))
+legend("topright", colnames(EPC[,c(7:9)]), col = c("black", "red", "blue"), lty = 1)
+
+with(EPC, plot(DateTime,Global_reactive_power, type = "l"))
+
+####Need to add in Legned and then print in the correct dimensions
+
+sapply(EPC,class)
+```
+

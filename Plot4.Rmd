@@ -1,0 +1,42 @@
+Plot 4
+========================================================
+
+The R script for Plot 4 of the 1st Exploratory Data analysis project.
+
+The script works on the assumption that the data file is downloaded seperately and is stored in a folder along with another folder which contains the Github Repository. This prevents the the dataset file from being pushed to Github
+
+
+The script also assumes the user has set thier working directory to the folder containing the dataset and the repo.
+
+```{r}
+wd <- getwd()
+EPC <- read.table("household_power_consumption.txt", sep = ";",na.strings = "NA", header = TRUE)
+setwd("./ExData_Plotting")
+EPC[,1] <-as.character(EPC[,1])
+EPC[,1] <- as.Date(as.character(EPC[,1]), "%d/%m/%Y")
+EPC <- EPC[EPC$Date >= as.Date(" 2007-02-01") & EPC$Date <= as.Date(" 2007-02-02"), ]
+
+for (i in 3:8) {
+  EPC[,i] <-as.numeric(as.character(EPC[,i]))
+  
+}
+EPC$DateTime <- as.POSIXct(paste(EPC$Date, EPC$Time), format="%Y-%m-%d %H:%M:%S")
+
+png(filename="Plot4.png")
+par(mfrow = (c(2,2)))
+
+with(EPC, plot(DateTime,Global_active_power, type = "l",  ylab = "Global Active Power (Kilowatts)") )
+
+with(EPC, plot(DateTime,Voltage, type = "l",  ylab = "Voltage") )
+
+with(EPC, plot(DateTime,Sub_metering_1, type = "l",  ylab = "Energy Sub Metering") )
+with(EPC,lines(DateTime, Sub_metering_2, col = "red"))
+with(EPC,lines(DateTime, Sub_metering_3, col = "blue"))
+legend("topright", colnames(EPC[,c(7:9)]), col = c("black", "red", "blue"), lty = 1, cex =0.6)
+
+with(EPC, plot(DateTime,Global_reactive_power, type = "l"))
+
+dev.off()
+setwd(wd)
+```
+

@@ -1,0 +1,27 @@
+Plot 1
+========================================================
+
+The R script for Plot 1 of the 1st Exploratory Data analysis project.
+
+The script works on the assumption that the data file is downloaded seperately and is stored in a folder along with another folder which contains the Github Repository. This prevents the the dataset file from being pushed to Github
+
+
+The script also assumes the user has set thier working directory to the folder containing the dataset and the repo.
+```{r}
+EPC <- read.table("household_power_consumption.txt", sep = ";",na.strings = "NA", header = TRUE)
+setwd("./ExData_Plotting")
+EPC[,1] <-as.character(EPC[,1])
+EPC[,1] <- as.Date(as.character(EPC[,1]), "%d/%m/%Y")
+EPC <- EPC[EPC$Date >= as.Date(" 2007-02-01") & EPC$Date <= as.Date(" 2007-02-02"), ]
+
+for (i in 3:8) {
+  EPC[,i] <-as.numeric(as.character(EPC[,i]))
+  
+}
+EPC$DateTime <- as.POSIXct(paste(EPC$Date, EPC$Time), format="%Y-%m-%d %H:%M:%S")
+
+par(mfrow = (c(1,1)))
+
+hist(EPC$Global_active_power, col = "red", main = "Global Active Power", xlab = "Global Active Power (Kilowatts)")
+```
+
